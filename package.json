@@ -10,16 +10,34 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:autodoxygen.helloWorld"
+		"*"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "autodoxygen.helloWorld",
-				"title": "Hello World"
+				"command": "autodoxygen.commentFile",
+				"title": "DoxyGen: Commenter le début du fichier"
+			},
+			{
+				"command": "autodoxygen.commentFunction",
+				"title": "DoxyGen: Commenter une fonction"
 			}
-		]
+		],
+		"keybindings": [
+            {
+                "command": "autodoxygen.commentFile",
+                "key": "ctrl+shift+oem_8",
+                "mac": "cmd+shift+oem_8",
+                "when": "editorTextFocus"
+            },
+			{
+                "command": "autodoxygen.commentFunction",
+                "key": "ctrl+oem_8",
+                "mac": "cmd+oem_8",
+                "when": "editorTextFocus"
+            }
+        ]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
