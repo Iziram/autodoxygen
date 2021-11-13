@@ -1,14 +1,17 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { stringify } from 'querystring';
 import * as vscode from 'vscode';
 import * as izi from "./iziram";
 import * as proc from "./processing/function";
 
 export function activate(context: vscode.ExtensionContext) {
+	//Création de la commande pour générer la docstring DoxyGen au début du fichier
 	let disposable = vscode.commands.registerCommand('autodoxygen.commentFile', () => {
+
+		//vérifie que l'éditeur est bien selectionné
 		const editor = vscode.window.activeTextEditor;
 		if(editor){
+			//affichage du placeholder de la docstring
 			let string : string = '"""! @brief [description du fichier]\n';
 			string += " @file "+ editor.document.fileName.substring(editor.document.fileName.lastIndexOf("\\") + 1 ) + "\n";
 			string += " @section libs Librairies/Modules\n";
@@ -20,10 +23,17 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	//Création de la commande pour générer la docstring Doxygen d'une fonction
 	let getText = vscode.commands.registerCommand("autodoxygen.commentFunction", ()=>{
+
+		//vérifie que l'éditeur est bien selectionné
 		const editor = vscode.window.activeTextEditor;
 		if(editor){
-			izi.enterText(proc.generateDocString(proc.generateDefinition(izi.getText())), new vscode.Position(editor.selection.active.line+1, 0));
+			//écriture de la docstring Doxygen générée à partir de la ligne selectionnée
+			izi.enterText(proc.generateDocString(
+				proc.generateDefinition(
+					izi.getText())), 
+					new vscode.Position(editor.selection.active.line+1, 0));
 		}
 	});
 

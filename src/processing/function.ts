@@ -1,11 +1,21 @@
 import * as types from '../types/types';
-
+/**
+ * Cette fonction permet de retirer une chaîne de caractères dans une autre
+ * @param mainText la chaine de caractère principale
+ * @param toRemove la chaine de caractère à retirer de la chaine principale
+ * @returns string la chaine de caractère principale sans la chaine à retirer
+ */
 function remove(mainText : string, toRemove: string) : string{
     mainText = mainText.replace(toRemove, "");
     return mainText;
 }
 
-function splitDefinition(definition : string){
+/**
+ * Cette fonction transforme une définition de fonction au format txt en un objet 
+ * @param definition la définition de fonction sous forme de chaine de caractère
+ * @returns la définition de fonction sous la forme d'un objet séparant la définition en 4 parties
+ */
+function splitDefinition(definition : string) : types.BaseDefinition{
     
     const head = definition.substring(0, definition.indexOf("("));
     const param =  definition.substring(definition.indexOf("(")+1, definition.indexOf(")"));
@@ -20,6 +30,11 @@ function splitDefinition(definition : string){
     
 }
 
+/**
+ * Cette fonction transforme une chaine de caractère représentant les paramètres d'une fonction en liste de d'objet Parameter
+ * @param text une chaine de caractère représentant les paramètres d'une fonction
+ * @returns liste de d'objet Parameter
+ */
 function getParams(text : string) : types.Parameter[] {
     const array : string[] = text.split(",");
     const params : types.Parameter[] = [];
@@ -32,6 +47,14 @@ function getParams(text : string) : types.Parameter[] {
     return params;
 }
 
+/**
+ * Cette fonction génère un objet de type Parameter en fonction d'une chaine de caractère
+ * @param text une chaine de caractère représentant un paramètre de fonction
+ * @example text = "a:int = 5"
+ * @example text = "a : int"
+ * @example text = "a"
+ * @returns un objet de type Parameter
+ */
 function generateParam(text : string) : types.Parameter{
     let param : types.Parameter = {
         name: '',
@@ -67,6 +90,12 @@ function generateParam(text : string) : types.Parameter{
     return param;
 }
 
+/**
+ * Cette fonction récupère les informations importantes 
+ * d'une chaine de caractère représentant le retour de la fonction 
+ * @param text une chaine de caractère représentant le retour de la fonction
+ * @returns les informations importantes sous forme de string ou un undefined si il n'y a pas d'informations
+ */
 function generateReturn(text : string) : string | undefined {
     const txt = remove(text, "->").trim();
     if(txt !== ""){
@@ -75,6 +104,11 @@ function generateReturn(text : string) : string | undefined {
     return undefined;
 }
 
+/**
+ * Cette fonction génère un objet Definition qui sera utilisé pour la docstring
+ * @param textLine une chaine de caractère représantant une définition de fonction
+ * @returns un objet Definition
+ */
 export function generateDefinition(textLine :string) : types.Definition | undefined{
     if(textLine.split(" ").includes("def")){
         const base : types.BaseDefinition = splitDefinition(textLine);
@@ -90,6 +124,11 @@ export function generateDefinition(textLine :string) : types.Definition | undefi
     
 }
 
+/**
+ * Cette fonction permet de générer une docstring en fonction d'un objet Definition passé en paramètre
+ * @param definition objet Definition
+ * @returns La docstring doxygen correspondant à la définition
+ */
 export function generateDocString(definition? : types.Definition) : string {
     const tab = "    ";
     let docstring : string = tab+`"""!\n`;

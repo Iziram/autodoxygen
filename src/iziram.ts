@@ -1,4 +1,9 @@
 import * as vscode from "vscode";
+/**
+ * Fonction permettant d'écrire sur l'éditeur de texte à une position spécifique
+ * @param text Le texte à écrire
+ * @param position La position à laquelle écrire (le curseur si non spécifiée)
+ */
 export function enterText(text: string, position?: vscode.Position) {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
@@ -12,7 +17,10 @@ export function enterText(text: string, position?: vscode.Position) {
         });
     }
 }
-
+/**
+ * Fonction qui récupère le texte de la ligne où se trouve le curseur
+ * @returns string -> le texte contenu dans la ligne 
+ */
 export function getText() : string{
     let value : string = "";
     
