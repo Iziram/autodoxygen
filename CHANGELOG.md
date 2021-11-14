@@ -1,6 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+
+## [1.2.3] - 2021-11-14
+### Changement(s) :
+- Correction du CHANGELOG.md
+
 ## [1.2.2] - 2021-11-14
 ### Ajout(s) :
 - Ajout de la licence MIT
