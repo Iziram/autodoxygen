@@ -1,10 +1,10 @@
 {
 	"name": "autodoxygen",
 	"displayName": "AutoDoxyGen",
-	"description": "make life easier with doxygen and python",
-	"version": "0.0.1",
+	"description": "Outil rapide pour faire de la docstring doxygen en python",
+	"version": "1.0.0",
 	"engines": {
-		"vscode": "^1.61.0"
+		"vscode": "^1.62.0"
 	},
 	"categories": [
 		"Other"
@@ -65,5 +65,9 @@
 		"webpack": "^5.52.1",
 		"webpack-cli": "^4.8.0",
 		"@vscode/test-electron": "^1.6.2"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Iziram/autodoxygen"
+	  }
 }
