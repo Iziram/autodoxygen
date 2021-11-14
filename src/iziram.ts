@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import {PEP} from './types/types';
 /**
  * Fonction permettant d'écrire sur l'éditeur de texte à une position spécifique
  * @param text Le texte à écrire
@@ -17,18 +18,33 @@ export function enterText(text: string, position?: vscode.Position) {
         });
     }
 }
+
 /**
- * Fonction qui récupère le texte de la ligne où se trouve le curseur
- * @returns string -> le texte contenu dans la ligne 
+ * Cette fonction permet de récupperer une définition de fonction python sous la forme d'une chaine de caractère supportant la norme PEP8
+ * @returns un objet PEP ou undefined
  */
-export function getText() : string{
-    let value : string = "";
-    
+export function getPEP8Definition() : PEP | undefined{
     const editor = vscode.window.activeTextEditor;
-    if (editor){
+    if(editor){
+        let process : boolean = true;
         let num = editor.selection.active.line;
-        let line = editor.document.lineAt(num);
-        value = line.text;
+        const startLine : string = editor.document.lineAt(num).text;
+        let finalString : string = "";
+
+        while (process && startLine.trim().startsWith("def")){
+            const line : string = editor.document.lineAt(num).text;
+            if(line.trim().endsWith(":")){
+                process = false;
+            }else{
+                num++;
+            }
+            finalString += line;
+        }
+        return {
+            "line": num+1,
+            "string": finalString
+        };
     }
-    return value;
+
+    return undefined;
 }

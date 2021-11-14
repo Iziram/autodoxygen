@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as izi from "./iziram";
 import * as proc from "./processing/function";
+import { PEP } from './types/types';
 
 export function activate(context: vscode.ExtensionContext) {
 	//Création de la commande pour générer la docstring DoxyGen au début du fichier
@@ -29,11 +30,15 @@ export function activate(context: vscode.ExtensionContext) {
 		//vérifie que l'éditeur est bien selectionné
 		const editor = vscode.window.activeTextEditor;
 		if(editor){
+			//récupération de la définition de la fonction (supporte PEP8)
+			const pep : PEP | undefined = izi.getPEP8Definition();
 			//écriture de la docstring Doxygen générée à partir de la ligne selectionnée
-			izi.enterText(proc.generateDocString(
-				proc.generateDefinition(
-					izi.getText())), 
-					new vscode.Position(editor.selection.active.line+1, 0));
+			if(pep){
+				izi.enterText(
+					proc.generateDocString(
+						proc.generateDefinition(pep.string))
+						, new vscode.Position(pep.line, 0));
+			}
 		}
 	});
 

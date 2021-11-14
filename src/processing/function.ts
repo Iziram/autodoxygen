@@ -1,4 +1,3 @@
-import { close } from 'fs';
 import * as types from '../types/types';
 /**
  * Cette fonction permet de retirer une chaîne de caractères dans une autre
