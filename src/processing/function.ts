@@ -1,3 +1,4 @@
+import { close } from 'fs';
 import * as types from '../types/types';
 /**
  * Cette fonction permet de retirer une chaîne de caractères dans une autre
@@ -36,7 +37,8 @@ function splitDefinition(definition : string) : types.BaseDefinition{
  * @returns liste de d'objet Parameter
  */
 function getParams(text : string) : types.Parameter[] {
-    const array : string[] = text.split(",");
+    const array : string[] = splitParams(text);
+    console.log(array);
     const params : types.Parameter[] = [];
     array.forEach((value)=>{
         if(value !== ""){
@@ -44,6 +46,33 @@ function getParams(text : string) : types.Parameter[] {
         }
         
     });
+    return params;
+}
+
+/**
+ * Cette fonction permet de séparer une chaine de caractères représantant les paramètres d'une fonction  en une liste de chaine de caractères
+ * @param text une chaine de caractères représantant les paramètres d'une fonction
+ * @returns une liste de chaine de caractères représantant chacune un paramètre particulier
+ */
+function splitParams(text: string) : string[]{
+    const params : string[] = [];
+    const brackets : number[] = [];
+
+    let word : string = "";
+    for(let c = 0; c < text.length ; c++){
+        word += text[c];
+        if(text[c] === "[" || text[c] === "(" || text[c] === "{"){
+            brackets.push(1);
+        }
+        if(text[c] === "]" || text[c] === ")" || text[c] === "}"){
+            brackets.pop();
+        }
+        if(brackets.length === 0 && text[c] === ","){
+            params.push(word.substring(0,word.length-1));
+            word = "";
+        }
+    }
+    params.push(word);
     return params;
 }
 

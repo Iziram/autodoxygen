@@ -1,16 +1,20 @@
 {
 	"name": "autodoxygen",
 	"displayName": "AutoDoxyGen",
+	"publisher": "iziram",
+	"author": {
+		"name" : "iziram"
+	},
 	"description": "Outil rapide pour faire de la docstring doxygen en python",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"engines": {
-		"vscode": "^1.62.0"
+		"vscode": "^1.0.0"
 	},
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onStartupFinished"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -51,7 +55,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.62.0",
+		"@types/vscode": "^1.0.0",
 		"@types/glob": "^7.1.4",
 		"@types/mocha": "^9.0.0",
 		"@types/node": "14.x",
