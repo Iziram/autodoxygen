@@ -37,7 +37,6 @@ function splitDefinition(definition : string) : types.BaseDefinition{
  */
 function getParams(text : string) : types.Parameter[] {
     const array : string[] = splitParams(text);
-    console.log(array);
     const params : types.Parameter[] = [];
     array.forEach((value)=>{
         if(value !== ""){
@@ -89,31 +88,25 @@ function generateParam(text : string) : types.Parameter{
     };
     const arr = [];
     let word : string = "";
+    let sep : string = "";
     for(let i = 0; i<text.length; i++){
         if(text[i] === ":" || text[i] === "="){
-            arr.push(word);
+            arr.push(word.trim());
+            sep += text[i];
             word = "";
         }else{
-            if(text[i] !== " "){
-                word += text[i];
-            }
+            word += text[i];
         }
     }
-    arr.push(word);
+    arr.push(word.trim());
+    param.name = arr[0];
 
-    switch(arr.length){
-        case 3:
-            param.name = arr[0];
-            param.type = arr[1];
-            param.value = arr[2];
-            break;
-        case 2:
-            param.name = arr[0];
-            param.type = arr[1];
-            break;
-        case 1:
-            param.name = arr[0];
-            break;
+    for (let i = 0; i<sep.length;i++){
+        if( sep[i] === ":"){
+            param.type = arr[i+1];
+        }else if( sep[i] === "="){
+            param.value = arr[i+1];
+        }
     }
     return param;
 }
@@ -174,7 +167,7 @@ export function generateDocString(definition? : types.Definition) : string {
                 docstring += " : "+ param.type;
             }
             if(param.value){
-                docstring += " = "+ param.type;
+                docstring += " = "+ param.value;
             }
             docstring += " => [description]\n";
         });
