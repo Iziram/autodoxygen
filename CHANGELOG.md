@@ -5,6 +5,7 @@
 ## [1.2.4] - 2021-12-05
 ### BugFix(s) :
 - Correction du bug des guillemets et des parenthèses
+- Correction du bug du nom de fichier sur Linux
 
 ### Ajout(s) :
 - Ajout automatique de la date dans la description doxygen du fichier
