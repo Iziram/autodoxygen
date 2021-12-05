@@ -6,7 +6,7 @@
 		"name" : "iziram"
 	},
 	"description": "Outil rapide pour faire de la docstring doxygen en python",
-	"version": "1.2.5",
+	"version": "1.3.0",
 	"engines": {
 		"vscode": "^1.0.0"
 	},
@@ -24,6 +24,10 @@
 				"title": "DoxyGen: Commenter le début du fichier"
 			},
 			{
+				"command": "autodoxygen.saveParamDescription",
+				"title": "DoxyGen: Sauvegarder la description d'un paramètre"
+			},
+			{
 				"command": "autodoxygen.commentFunction",
 				"title": "DoxyGen: Commenter une fonction"
 			}
@@ -33,6 +37,12 @@
                 "command": "autodoxygen.commentFile",
                 "key": "ctrl+shift+oem_8",
                 "mac": "cmd+shift+oem_8",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "autodoxygen.saveParamDescription",
+                "key": "ctrl+alt+oem_8",
+                "mac": "cmd+alt+oem_8",
                 "when": "editorTextFocus"
             },
 			{
@@ -48,8 +58,18 @@
 				"properties": {
 					"autodoxygen.auteur":{
 						"type":"string",
-						"description": "",
+						"description": "Valeur de l'Auteur dans la partie Auteur de la description du fichier.",
 						"default": "[Prénom] [Nom]"
+					},
+					"autodoxygen.memoire.autorisation":{
+						"type": "boolean",
+						"default": true,
+						"description": "(WIP) Autorise l'extension à sauvegarder les descriptions des paramètres pour les réutiliser plus tard"
+					},
+					"autodoxygen.memoire.memoire":{
+						"type": "array",
+						"default": [],
+						"description": "(WIP) Autorise l'extension à sauvegarder les descriptions des paramètres pour les réutiliser plus tard"
 					}
 				}
 			}

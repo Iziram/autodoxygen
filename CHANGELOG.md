@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [1.3.0] - 2021-12-05
+### Ajout(s) :
+- Système de sauvegarde de description de paramètres
+- Ajout automatique de la description si le paramètre est en mémoire
+
 ## [1.2.5] - 2021-12-05
 ### Ajout(s) :
 - Ajout automatique du nom et du prénom (Configurable dans les paramètres de l'extension. -> autodoxygen. Auteur)

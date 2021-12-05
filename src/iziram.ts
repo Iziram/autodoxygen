@@ -49,9 +49,17 @@ export function getPEP8Definition() : PEP | undefined{
     return undefined;
 }
 
+export function getParameterLine() : string{
+    let value = "";
+    const editor = vscode.window.activeTextEditor;
+    if(editor){
+        value = editor.document.lineAt(editor.selection.active.line).text.trim();
+    }
+    return value;
+}
+
 export function getFileName(path: string) : string{
     let value = "";
-
     let i = path.length -1 ;
     while (i >=0){
         const c = path[i];
@@ -63,8 +71,5 @@ export function getFileName(path: string) : string{
         }
         i--;
     }
-
-
-
     return value;
 }

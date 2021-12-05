@@ -4,9 +4,16 @@ import * as vscode from 'vscode';
 import * as izi from "./iziram";
 import * as proc from "./processing/function";
 import { PEP } from './types/types';
+import { ParamMemory } from './processing/remembering';
 
 export function activate(context: vscode.ExtensionContext) {
 	const configuration = vscode.workspace.getConfiguration('autodoxygen');
+
+	let memory : ParamMemory | undefined = undefined;
+	if(configuration.get('memoire')){
+		memory = new ParamMemory();
+	}
+
 	//Création de la commande pour générer la docstring DoxyGen au début du fichier
 	let disposable = vscode.commands.registerCommand('autodoxygen.commentFile', () => {
 
@@ -27,6 +34,16 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	let saveParameter = vscode.commands.registerCommand('autodoxygen.saveParamDescription', ()=>{
+		if(configuration.get('memoire.autorisation')){
+			const parameter = proc.getParamDescription(izi.getParameterLine());
+			memory?.saveParameter(parameter);
+			vscode.window.showInformationMessage("Le paramètre '"+parameter.name+"' a bien été sauvegardé.");
+		}else{
+			vscode.window.showErrorMessage("Vous n'avez pas autorisé la sauvegarde des paramètres. Veuillez le faire avant d'essayer de sauvegarder un paramètre");
+		}
+	});
+
 	//Création de la commande pour générer la docstring Doxygen d'une fonction
 	let getText = vscode.commands.registerCommand("autodoxygen.commentFunction", ()=>{
 
@@ -36,15 +53,18 @@ export function activate(context: vscode.ExtensionContext) {
 			//récupération de la définition de la fonction (supporte PEP8)
 			const pep : PEP | undefined = izi.getPEP8Definition();
 			//écriture de la docstring Doxygen générée à partir de la ligne selectionnée
+
+			
+
 			if(pep){
 				izi.enterText(
 					proc.generateDocString(
-						proc.generateDefinition(pep.string))
+						proc.generateDefinition(pep.string), memory)
 						, new vscode.Position(pep.line, 0));
 			}
 		}
 	});
 
-	context.subscriptions.push(disposable, getText);
+	context.subscriptions.push(disposable, getText, saveParameter);
 	
 }

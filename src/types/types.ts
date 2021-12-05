@@ -18,6 +18,11 @@ export interface Parameter{
 	type? : string,
 	value? : string
 }
+export interface ParameterDescription{
+	name : string,
+	description: string
+}
+
 
 export interface PEP{
 	line: number,

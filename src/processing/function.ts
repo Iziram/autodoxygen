@@ -1,4 +1,6 @@
 import * as types from '../types/types';
+import * as vscode from 'vscode';
+import { ParamMemory } from './remembering';
 /**
  * Cette fonction permet de retirer une chaîne de caractères dans une autre
  * @param mainText la chaine de caractère principale
@@ -226,7 +228,7 @@ export function generateDefinition(textLine :string) : types.Definition | undefi
  * @param definition objet Definition
  * @returns La docstring doxygen correspondant à la définition
  */
-export function generateDocString(definition? : types.Definition) : string {
+export function generateDocString(definition? : types.Definition, memory? : ParamMemory) : string {
     const tab = "    ";
     let docstring : string = tab+`"""!\n`;
     if(definition){
@@ -239,13 +241,26 @@ export function generateDocString(definition? : types.Definition) : string {
         }
         definition.params.forEach((param : types.Parameter)=>{
             docstring += tabulations + tab +"@param " + param.name;
+
             if(param.type){
                 docstring += " : "+ param.type;
             }
             if(param.value){
                 docstring += " = "+ param.value;
             }
-            docstring += " => [description]\n";
+	        const configuration = vscode.workspace.getConfiguration('autodoxygen');
+
+            if(configuration.get('memoire.autorisation') && memory){
+                const desc : types.ParameterDescription | undefined = memory.getSavedParameter(param.name);
+                if(desc){
+                    docstring += " => "+desc.description+"\n";
+                }else{
+                    docstring += " => [description]\n";
+                }
+
+            }else{
+                docstring += " => [description]\n";
+            }
         });
         if(definition.return) {
             docstring += tabulations + "Retour de la fonction : \n";
@@ -256,4 +271,48 @@ export function generateDocString(definition? : types.Definition) : string {
         return docstring +'\n'+tabulations+'"""\n';
     }
     return docstring + '\n'+tab+'"""\n';
+}
+
+export function getParamDescription(text : string) : types.ParameterDescription{
+    let param : types.ParameterDescription = {
+        name: '',
+        description: ""
+    };
+
+    let echap : boolean = false;
+    const brackets : string[] = [];
+    const arr = [];
+    let word : string = "";
+    let sep : string = "";
+
+    for(let c = 0; c < text.length ; c++){
+        if(text[c] === "\\"){
+            echap = true;
+            continue;
+        }
+        if(!echap && (text[c] === getClosingCharacter(brackets[brackets.length - 1]))){
+            brackets.pop();
+        }
+        else if(!echap && (text[c] === "[" || text[c] === "(" || text[c] === "{" || (text[c] === "\""))){
+            brackets.push(text[c]);
+        }
+        
+        if (brackets.length === 0 && (text[c] === ":" || text[c] === "=" || text[c] === ">") && sep.indexOf(text[c]) === -1){
+            arr.push(word.trim());
+            sep += text[c];
+            word = "";
+        }else{
+            word += text[c];
+        }
+        echap = false;
+        
+    }
+    arr.push(word.trim());
+    param.name = arr[0].replace("@param ", "");
+    for (let i = 0; i<sep.length;i++){
+        if( sep[i] === ">"){
+            param.description = arr[i+1];
+        }
+    }
+    return param;
 }
