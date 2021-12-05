@@ -14,11 +14,13 @@ export function activate(context: vscode.ExtensionContext) {
 		if(editor){
 			//affichage du placeholder de la docstring
 			let string : string = '"""! @brief [description du fichier]\n';
-			string += " @file "+ editor.document.fileName.substring(editor.document.fileName.lastIndexOf("\\") + 1 ) + "\n";
+			string += " @file "+izi.getFileName(editor.document.uri.fsPath) + "\n";
 			string += " @section libs Librairies/Modules\n";
 			string += "  - [Nom du module] (lien)\n\n";
 			string += " @section authors Author(s)\n";
-			string += "  - Créé par [Prénom] [Nom] le [Date] .\n";
+			const d : Date = new Date();
+			const date : string = d.getDate()+"/"+(d.getMonth()+1) + "/"+d.getFullYear();
+			string += "  - Créé par [Prénom] [Nom] le "+date+" .\n";
 			string += '"""\n';
 			izi.enterText(string, new vscode.Position(0,0));
 		}

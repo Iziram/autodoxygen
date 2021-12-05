@@ -48,3 +48,23 @@ export function getPEP8Definition() : PEP | undefined{
 
     return undefined;
 }
+
+export function getFileName(path: string) : string{
+    let value = "";
+
+    let i = path.length -1 ;
+    while (i >=0){
+        const c = path[i];
+        if(c !== "\\" && c !== "/"){
+            value = c+value;
+        }
+        else{
+            break;
+        }
+        i--;
+    }
+
+
+
+    return value;
+}

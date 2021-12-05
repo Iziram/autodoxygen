@@ -10,6 +10,33 @@ function remove(mainText : string, toRemove: string) : string{
     return mainText;
 }
 
+function getLastParamCharIndex(definition : string) :number{
+    let value = -1;
+    let echap : boolean = false;
+    const brackets : string[] = [];
+    for(let c = 0; c < definition.length ; c++){
+        if(definition[c] === "\\"){
+            echap = true;
+            continue;
+        }
+        if(!echap && (definition[c] === getClosingCharacter(brackets[brackets.length - 1]))){
+            brackets.pop();
+            value = c;
+            if (brackets.length === 0){
+                break;
+            }
+        }
+        else if(!echap && (definition[c] === "[" || definition[c] === "(" || definition[c] === "{" || (definition[c] === "\""))){
+            brackets.push(definition[c]);
+        }
+       
+        echap = false;
+        
+    }
+
+    return value;
+}
+
 /**
  * Cette fonction transforme une définition de fonction au format txt en un objet 
  * @param definition la définition de fonction sous forme de chaine de caractère
@@ -18,8 +45,9 @@ function remove(mainText : string, toRemove: string) : string{
 function splitDefinition(definition : string) : types.BaseDefinition{
     
     const head = definition.substring(0, definition.indexOf("("));
-    const param =  definition.substring(definition.indexOf("(")+1, definition.indexOf(")"));
-    const retour = definition.substring(definition.indexOf(")")+1, definition.lastIndexOf(":"));
+    const lastChar : number = getLastParamCharIndex(definition);
+    const param =  definition.substring(definition.indexOf("(")+1, lastChar);
+    const retour = definition.substring(lastChar + 1 , definition.lastIndexOf(":"));
     const tab = definition.substring(0,definition.indexOf("d"));
     return {
         title: head.replace("def ", "").replace(tab,""),
@@ -47,6 +75,31 @@ function getParams(text : string) : types.Parameter[] {
     return params;
 }
 
+function getClosingCharacter(char : string) : string{
+    let value = "";
+    switch(char){
+        case '[':
+            value = ']';
+            break;
+        case '(':
+            value = ')';
+            break;
+        case '{':
+            value = '}';
+            break;
+        case '"':
+            value = '"';
+            break;
+        case "'":
+            value = "'";
+            break;
+        default:
+            value ="";
+            break;
+    }
+    return value;
+}
+
 /**
  * Cette fonction permet de séparer une chaine de caractères représantant les paramètres d'une fonction  en une liste de chaine de caractères
  * @param text une chaine de caractères représantant les paramètres d'une fonction
@@ -54,21 +107,27 @@ function getParams(text : string) : types.Parameter[] {
  */
 function splitParams(text: string) : string[]{
     const params : string[] = [];
-    const brackets : number[] = [];
+    const brackets : string[] = [];
 
+    let echap : boolean = false;
     let word : string = "";
     for(let c = 0; c < text.length ; c++){
         word += text[c];
-        if(text[c] === "[" || text[c] === "(" || text[c] === "{"){
-            brackets.push(1);
+        if(text[c] === "\\"){
+            echap = true;
+            continue;
         }
-        if(text[c] === "]" || text[c] === ")" || text[c] === "}"){
+        if(!echap && (text[c] === getClosingCharacter(brackets[brackets.length - 1]))){
             brackets.pop();
+        }else if(!echap && brackets.length === 0 && (text[c] === "[" || text[c] === "(" || text[c] === "{" || (text[c] === "\"") )){
+            brackets.push(text[c]);
         }
+        
         if(brackets.length === 0 && text[c] === ","){
             params.push(word.substring(0,word.length-1));
             word = "";
         }
+        echap = false;
     }
     params.push(word);
     return params;
@@ -86,17 +145,34 @@ function generateParam(text : string) : types.Parameter{
     let param : types.Parameter = {
         name: '',
     };
+
+    let echap : boolean = false;
+    const brackets : string[] = [];
     const arr = [];
     let word : string = "";
     let sep : string = "";
-    for(let i = 0; i<text.length; i++){
-        if(text[i] === ":" || text[i] === "="){
+
+    for(let c = 0; c < text.length ; c++){
+        if(text[c] === "\\"){
+            echap = true;
+            continue;
+        }
+        if(!echap && (text[c] === getClosingCharacter(brackets[brackets.length - 1]))){
+            brackets.pop();
+        }
+        else if(!echap && (text[c] === "[" || text[c] === "(" || text[c] === "{" || (text[c] === "\""))){
+            brackets.push(text[c]);
+        }
+        
+        if (brackets.length === 0 && (text[c] === ":" || text[c] === "=")){
             arr.push(word.trim());
-            sep += text[i];
+            sep += text[c];
             word = "";
         }else{
-            word += text[i];
+            word += text[c];
         }
+        echap = false;
+        
     }
     arr.push(word.trim());
     param.name = arr[0];
@@ -136,7 +212,7 @@ export function generateDefinition(textLine :string) : types.Definition | undefi
         return {
             "name": base.title,
             "tab": base.tab,
-            "summary": "@brief Explication de la fonction",
+            "summary": "@brief [Description de la fonction]",
             "params" : getParams(base.param),
             "return" : generateReturn(base.return)
         };
@@ -173,7 +249,7 @@ export function generateDocString(definition? : types.Definition) : string {
         });
         if(definition.return) {
             docstring += tabulations + "Retour de la fonction : \n";
-            docstring += tabulations + tab + "@return " +definition.return + " [Description]\n";
+            docstring += tabulations + tab + "@return " +definition.return + " => [description]\n";
         }
        
         

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.2.4] - 2021-12-05
+### BugFix(s) :
+- Correction du bug des guillemets et des parenthèses
+
+### Ajout(s) :
+- Ajout automatique de la date dans la description doxygen du fichier
+
 ## [1.2.3] - 2021-11-14
 ### Changement(s) :
 - Correction du CHANGELOG.md
