@@ -23,11 +23,14 @@ export function enterText(text: string, position?: vscode.Position) {
  * Cette fonction permet de récupperer une définition de fonction python sous la forme d'une chaine de caractère supportant la norme PEP8
  * @returns un objet PEP ou undefined
  */
-export function getPEP8Definition() : PEP | undefined{
+export function getPEP8Definition(line? : number) : PEP | undefined{
     const editor = vscode.window.activeTextEditor;
     if(editor){
         let process : boolean = true;
         let num = editor.selection.active.line;
+        if(line) {
+            num = line;
+        }
         const startLine : string = editor.document.lineAt(num).text;
         let finalString : string = "";
 
@@ -70,6 +73,21 @@ export function getFileName(path: string) : string{
             break;
         }
         i--;
+    }
+    return value;
+}
+
+export function getLineOfDef(definition : string) : number{
+    let value = -1;
+    const editor = vscode.window.activeTextEditor;
+    if(editor){
+        for (let i = 0; i<editor.document.lineCount; i++){
+            const line = editor.document.lineAt(i).text.trimStart();
+            if(line === definition){
+                value = i;
+                break;
+            }
+        }
     }
     return value;
 }

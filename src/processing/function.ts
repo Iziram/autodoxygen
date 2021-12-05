@@ -153,7 +153,6 @@ function generateParam(text : string) : types.Parameter{
     const arr = [];
     let word : string = "";
     let sep : string = "";
-
     for(let c = 0; c < text.length ; c++){
         if(text[c] === "\\"){
             echap = true;
@@ -171,7 +170,9 @@ function generateParam(text : string) : types.Parameter{
             sep += text[c];
             word = "";
         }else{
-            word += text[c];
+            if(text[c] !== " "){
+                word += text[c];
+            }
         }
         echap = false;
         

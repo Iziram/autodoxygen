@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	//Création de la commande pour générer la docstring DoxyGen au début du fichier
-	let disposable = vscode.commands.registerCommand('autodoxygen.commentFile', () => {
+	const disposable = vscode.commands.registerCommand('autodoxygen.commentFile', () => {
 
 		//vérifie que l'éditeur est bien selectionné
 		const editor = vscode.window.activeTextEditor;
@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	let saveParameter = vscode.commands.registerCommand('autodoxygen.saveParamDescription', ()=>{
+	const saveParameter = vscode.commands.registerCommand('autodoxygen.saveParamDescription', ()=>{
 		if(configuration.get('memoire.autorisation')){
 			const parameter = proc.getParamDescription(izi.getParameterLine());
 			if(parameter){
@@ -50,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	//Création de la commande pour générer la docstring Doxygen d'une fonction
-	let getText = vscode.commands.registerCommand("autodoxygen.commentFunction", ()=>{
+	const getText = vscode.commands.registerCommand("autodoxygen.commentFunction", ()=>{
 
 		//vérifie que l'éditeur est bien selectionné
 		const editor = vscode.window.activeTextEditor;
@@ -70,6 +70,29 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(disposable, getText, saveParameter);
+	const doAll = vscode.commands.registerCommand('autodoxygen.commentAllFile',()=>{
+		const editor = vscode.window.activeTextEditor;
+
+		if(editor){
+			let i = 0;
+			while (i < editor.document.lineCount){
+				const line =  editor.document.lineAt(i).text.trimStart();
+				if(line.substr(0,3) === "def"){
+					setTimeout(()=>{
+						const pep : PEP | undefined = izi.getPEP8Definition(izi.getLineOfDef(line));
+						if(pep){
+							izi.enterText(
+								proc.generateDocString(
+									proc.generateDefinition(pep.string), memory)
+									, new vscode.Position(pep.line, 0));
+						}
+					}, i*10);
+				}
+				i++;
+			}
+		}
+	});
+
+	context.subscriptions.push(disposable, getText, saveParameter, doAll);
 	
 }
