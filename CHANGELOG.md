@@ -1,7 +1,9 @@
 # Change Log
 
 ## [Unreleased]
-
+## [1.3.1] - 2021-12-05
+### BugFix(s) :
+- Correction du bug permettant de sauvegarder d'autres choses que des paramètres
 ## [1.3.0] - 2021-12-05
 ### Ajout(s) :
 - Système de sauvegarde de description de paramètres

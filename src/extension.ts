@@ -37,8 +37,13 @@ export function activate(context: vscode.ExtensionContext) {
 	let saveParameter = vscode.commands.registerCommand('autodoxygen.saveParamDescription', ()=>{
 		if(configuration.get('memoire.autorisation')){
 			const parameter = proc.getParamDescription(izi.getParameterLine());
-			memory?.saveParameter(parameter);
-			vscode.window.showInformationMessage("Le paramètre '"+parameter.name+"' a bien été sauvegardé.");
+			if(parameter){
+				memory?.saveParameter(parameter);
+				vscode.window.showInformationMessage("Le paramètre '"+parameter.name+"' a bien été sauvegardé.");
+			}else{
+				vscode.window.showErrorMessage("Erreur: La ligne sélectionnée ne respecte pas la syntaxe des paramètres");
+			}
+			
 		}else{
 			vscode.window.showErrorMessage("Vous n'avez pas autorisé la sauvegarde des paramètres. Veuillez le faire avant d'essayer de sauvegarder un paramètre");
 		}

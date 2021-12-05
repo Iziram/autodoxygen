@@ -273,7 +273,7 @@ export function generateDocString(definition? : types.Definition, memory? : Para
     return docstring + '\n'+tab+'"""\n';
 }
 
-export function getParamDescription(text : string) : types.ParameterDescription{
+export function getParamDescription(text : string) : types.ParameterDescription | undefined{
     let param : types.ParameterDescription = {
         name: '',
         description: ""
@@ -308,11 +308,15 @@ export function getParamDescription(text : string) : types.ParameterDescription{
         
     }
     arr.push(word.trim());
-    param.name = arr[0].replace("@param ", "");
-    for (let i = 0; i<sep.length;i++){
-        if( sep[i] === ">"){
-            param.description = arr[i+1];
+    if (arr[0].indexOf("@param ") !== -1){
+        param.name = arr[0].replace("@param ", "");
+        for (let i = 0; i<sep.length;i++){
+            if( sep[i] === ">"){
+                param.description = arr[i+1];
+            }
         }
+        return param;
+    }else{
+        return undefined;
     }
-    return param;
 }
