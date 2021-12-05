@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.2.5] - 2021-12-05
+### Ajout(s) :
+- Ajout automatique du nom et du prénom (Configurable dans les paramètres de l'extension. -> autodoxygen. Auteur)
+
 ## [1.2.4] - 2021-12-05
 ### BugFix(s) :
 - Correction du bug des guillemets et des parenthèses

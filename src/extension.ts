@@ -6,6 +6,7 @@ import * as proc from "./processing/function";
 import { PEP } from './types/types';
 
 export function activate(context: vscode.ExtensionContext) {
+	const configuration = vscode.workspace.getConfiguration('autodoxygen');
 	//Création de la commande pour générer la docstring DoxyGen au début du fichier
 	let disposable = vscode.commands.registerCommand('autodoxygen.commentFile', () => {
 
@@ -17,10 +18,10 @@ export function activate(context: vscode.ExtensionContext) {
 			string += " @file "+izi.getFileName(editor.document.uri.fsPath) + "\n";
 			string += " @section libs Librairies/Modules\n";
 			string += "  - [Nom du module] (lien)\n\n";
-			string += " @section authors Author(s)\n";
+			string += " @section authors Auteur(s)\n";
 			const d : Date = new Date();
 			const date : string = d.getDate()+"/"+(d.getMonth()+1) + "/"+d.getFullYear();
-			string += "  - Créé par [Prénom] [Nom] le "+date+" .\n";
+			string += "  - Créé par "+configuration.get('auteur')+" le "+date+" .\n";
 			string += '"""\n';
 			izi.enterText(string, new vscode.Position(0,0));
 		}

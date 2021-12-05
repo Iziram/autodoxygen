@@ -6,7 +6,7 @@
 		"name" : "iziram"
 	},
 	"description": "Outil rapide pour faire de la docstring doxygen en python",
-	"version": "1.2.4",
+	"version": "1.2.5",
 	"engines": {
 		"vscode": "^1.0.0"
 	},
@@ -46,10 +46,10 @@
 			{
 				"title": "AutoDoxyGen",
 				"properties": {
-					"autodoxygen.remember":{
-						"type":"boolean",
-						"default": true,
-						"description": "(WIP)Autorise AutoDoxygen à réutiliser les descriptions de variables enregistrées."
+					"autodoxygen.auteur":{
+						"type":"string",
+						"description": "",
+						"default": "[Prénom] [Nom]"
 					}
 				}
 			}
