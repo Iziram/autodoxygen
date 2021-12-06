@@ -74,10 +74,28 @@ export function activate(context: vscode.ExtensionContext) {
 		const editor = vscode.window.activeTextEditor;
 
 		if(editor){
-			let i = 0;
-			while (i < editor.document.lineCount){
+			let i = -1;
+			const bigComments : number[] = [];
+			while (i < editor.document.lineCount - 1){
+				i++;
+				console.log(i, bigComments);
 				const line =  editor.document.lineAt(i).text.trimStart();
-				if(line.substr(0,3) === "def"){
+				if(!bigComments.includes(2) && (line.startsWith('"""') || line.endsWith('""""')) ){
+					if(bigComments.includes(1)){
+						bigComments.splice(bigComments.lastIndexOf(1), 1);
+					}else{
+						bigComments.push(1);
+					}
+					continue;
+				}else if(!bigComments.includes(1) && (line.startsWith("'''") || line.endsWith("'''"))){
+					if(bigComments.includes(2)){
+						bigComments.splice(bigComments.lastIndexOf(2), 1);
+					}else{
+						bigComments.push(2);
+					}
+					continue;
+				}
+				if(line.startsWith('def') && bigComments.length === 0){
 					setTimeout(()=>{
 						const pep : PEP | undefined = izi.getPEP8Definition(izi.getLineOfDef(line));
 						if(pep){
@@ -88,7 +106,6 @@ export function activate(context: vscode.ExtensionContext) {
 						}
 					}, i*10);
 				}
-				i++;
 			}
 		}
 	});

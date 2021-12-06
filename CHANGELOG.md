@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+## [1.4.1] -2021-12-06
+### BugFix(s):
+- Correction du bug de génération de docstring dans des commentaires
 ## [1.4.0] - 2021-12-05
 ### Ajout(s) : 
 - Commande "autodoxygen.commentAllFile"
