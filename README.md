@@ -1,22 +1,20 @@
 # AutoDoxyGen
 
-AutoDoxyGen est un générateur de DocString python utilisant la syntaxe doxygen
+AutoDoxygen is a Python Docstring generate that uses the Doxygen syntax
 
 ## <u>Features</u>
 
-- Génération d'une docstring principale au début du fichier à l'aide de la commande "autodoxygen.commentFile" ou avec le Shortcut : `ctrl + shift + !`
-- Génération de toute la docstring d'un fichier à l'aide de la commande "autodoxygen.commentAllFile" ou avec le raccourci : `ctrl + shift + :`
-- Génération d'une docstring par fonction en cliquant sur la ligne de la définition de la fonction et en exécutant de la commande "autodoxygen.commentFunction" ou avec le raccourci :  `ctrl + !`
-- Vous pouvez sauvegarder la description d'un paramètre pour que l'extension la mette automatiquement si elle recroise le paramètre avec l'aide de la commande "autodoxygen.saveParamDescription" : `ctrl + alt + !`
+- Generate the doxygen's file comment, with the command "autodoxygen.commentFile" or the keyboard shortcut : `ctrl + shift + !`
+- Generate every function's docstring of a file , with the command "autodoxygen.commentAllFile" or the keyboard shortcut : `ctrl + shift + :`
+- Generate a function's docstring, with the command "autodoxygen.commentFunction" or the keyboard shortcut : `ctrl + !`. You need to select the `def` part of the function to make it work
+- You can save a parameter's description, with the command "autodoxygen.saveParamDescription" or the keyboard shortcut : `ctrl + alt + !`. AutoDoxygen will use the saved description if the parameter's name is regonized in a function.
 
-<b>Si les raccourcits clavier ne fonctionne pas : </b> Vous pouvez les changer dans `Fichier -> préférences -> Raccourcis clavier` et en recherchant le nom de la commande `autodoxygen.NOM`
-
-Vous pouvez aussi executer directement la commande en faisant `ctrl+shift+p` et en indiquant doxygen dans le menu.
+<b>If the keyboard's shortcuts don't work : </b> You can change them in : `File -> Preferences -> keyboard shortcut` and type "autodoxygen"
 
 ## <u>Configuration</u>
 
-Certains paramètres de l'extension sont configurables. Vous pouvez les retrouver à l'aide des options de l'extension :  `Cliquer sur l'engrenage à droite de l'extension -> Extensions settings`
+You can access the extension's settings by clicking on the gear. 
 
 ## <u>Issues </u>
 
-Si vous avez un problème avec l'extension vous pouvez me contacter à l'adresse suivante : sondage@iziram.fr
+If you have any issues with the extension, contact me by email: sondage@iziram.fr

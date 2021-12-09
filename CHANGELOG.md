@@ -1,7 +1,11 @@
 # Change Log
 
 ## [Unreleased]
-## [1.4.1] -2021-12-06
+## [2.0.0] - 2021-12-9
+### Addition(s) :
+- Language support : Currently the extension supports English and French. More languages can be added if needed.
+
+## [1.4.1] - 2021-12-06
 ### BugFix(s):
 - Correction du bug de génération de docstring dans des commentaires
 ## [1.4.0] - 2021-12-05

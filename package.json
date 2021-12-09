@@ -5,8 +5,8 @@
 	"author": {
 		"name" : "iziram"
 	},
-	"description": "Outil rapide pour faire de la docstring doxygen en python",
-	"version": "1.4.1",
+	"description": "A quick and easy tool to generate Doxygen's docstring on python files",
+	"version": "2.0.0",
 	"engines": {
 		"vscode": "^1.0.0"
 	},
@@ -21,19 +21,19 @@
 		"commands": [
 			{
 				"command": "autodoxygen.commentFile",
-				"title": "DoxyGen: Commenter le début du fichier"
+				"title": "DoxyGen: Generate the doxygen's file comment"
 			},
 			{
 				"command": "autodoxygen.commentAllFile",
-				"title": "DoxyGen: Génère la documentation pour tout le fichier"
+				"title": "DoxyGen: Generate the doxygen's doctstring of every function"
 			},
 			{
 				"command": "autodoxygen.saveParamDescription",
-				"title": "DoxyGen: Sauvegarder la description d'un paramètre"
+				"title": "DoxyGen: Save the description of a parameter"
 			},
 			{
 				"command": "autodoxygen.commentFunction",
-				"title": "DoxyGen: Commenter une fonction"
+				"title": "DoxyGen: Generate the doxygen's doctring of a function"
 			}
 		],
 		"keybindings": [
@@ -66,21 +66,31 @@
 			{
 				"title": "AutoDoxyGen",
 				"properties": {
-					"autodoxygen.auteur":{
+					"autodoxygen.author":{
 						"type":"string",
-						"description": "Valeur de l'Auteur dans la partie Auteur de la description du fichier.",
-						"default": "[Prénom] [Nom]"
+						"description": "Default value of the Author section",
+						"default": "[Name] [Last Name]"
 					},
 					"autodoxygen.memoire.autorisation":{
 						"type": "boolean",
 						"default": true,
-						"description": "(WIP) Autorise l'extension à sauvegarder les descriptions des paramètres pour les réutiliser plus tard"
+						"description": "Enables the memory settings. You'll be able to save a parameter's description and the extension will use it."
 					},
 					"autodoxygen.memoire.memoire":{
 						"type": "array",
 						"default": [],
-						"description": "(WIP) Autorise l'extension à sauvegarder les descriptions des paramètres pour les réutiliser plus tard"
+						"description": "Here lies the memory of the extensions."
+					},
+					"autodoxygen.language":{
+						"type" : "string",
+						"default" : "français",
+						"enum" : ["english","français"],
+						"enumDescriptions": [
+							"Changes the extenstion's language to English",
+							"Change la langue de l'extension en Français"
+						]
 					}
+						
 				}
 			}
 		]

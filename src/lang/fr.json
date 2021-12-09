@@ -1,0 +1,21 @@
+{
+    "principale":{
+        "desc": "description du fichier",
+        "auth" : "Auteur(s)",
+        "module" : "Nom du module",
+        "link" : "lien",
+        "create" : "Créé par %auteur% le %date%"
+    },
+    "notification":{
+        "saved" : "Le paramètre %name% a bien été sauvegardé.",
+        "syntaxError" : "Erreur: La ligne sélectionnée ne respecte pas la syntaxe des paramètres",
+        "authError" : "Vous n'avez pas autorisé la sauvegarde des paramètres. Veuillez le faire avant d'essayer de sauvegarder un paramètre"
+    },
+    "fonction":{
+        "summary" : "Description de la fonction",
+        "paramTitle" : "Paramètres",
+        "params" : "description",
+        "returnTitle" : "Retour de la fonction",
+        "returns" : "description"
+    }
+}

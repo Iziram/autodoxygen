@@ -1,6 +1,7 @@
 import * as types from '../types/types';
 import * as vscode from 'vscode';
 import { ParamMemory } from './remembering';
+import { getLang } from '../lang/lang';
 /**
  * Cette fonction permet de retirer une chaîne de caractères dans une autre
  * @param mainText la chaine de caractère principale
@@ -209,13 +210,20 @@ function generateReturn(text : string) : string | undefined {
  * @param textLine une chaine de caractère représantant une définition de fonction
  * @returns un objet Definition
  */
-export function generateDefinition(textLine :string) : types.Definition | undefined{
+export function generateDefinition(textLine :string, lang = 'fr') : types.Definition | undefined{
+    const language = getLang(lang);
+    let desc : string;
+    if (language){
+        desc = language.fonction.summary;
+    }else{
+        desc = "Description de la fonction";
+    }
     if(textLine.split(" ").includes("def")){
         const base : types.BaseDefinition = splitDefinition(textLine);
         return {
             "name": base.title,
             "tab": base.tab,
-            "summary": "@brief [Description de la fonction]",
+            "summary": "@brief ["+desc+"]",
             "params" : getParams(base.param),
             "return" : generateReturn(base.return)
         };
@@ -229,16 +237,24 @@ export function generateDefinition(textLine :string) : types.Definition | undefi
  * @param definition objet Definition
  * @returns La docstring doxygen correspondant à la définition
  */
-export function generateDocString(definition? : types.Definition, memory? : ParamMemory) : string {
+export function generateDocString(definition? : types.Definition, memory? : ParamMemory, lang = 'français') : string {
+    
+    const language = getLang(lang);
+    
+    
     const tab = "    ";
     let docstring : string = tab+`"""!\n`;
+    if(!language){
+        return docstring + '\n'+tab+'"""\n';
+    }
+
     if(definition){
         const tabulations : string = definition.tab + tab;
         docstring = definition.tab + docstring;
 
         docstring += tabulations + definition.summary + "\n\n";
         if(definition.params.length > 0) {
-            docstring += tabulations + "Paramètre(s) : \n";
+            docstring += tabulations + language.fonction.paramTitle+" : \n";
         }
         definition.params.forEach((param : types.Parameter)=>{
             docstring += tabulations + tab +"@param " + param.name;
@@ -256,16 +272,16 @@ export function generateDocString(definition? : types.Definition, memory? : Para
                 if(desc){
                     docstring += " => "+desc.description+"\n";
                 }else{
-                    docstring += " => [description]\n";
+                    docstring += " => ["+language.fonction.params+"]\n";
                 }
 
             }else{
-                docstring += " => [description]\n";
+                docstring += " => ["+language.fonction.params+"]\n";
             }
         });
         if(definition.return) {
-            docstring += tabulations + "Retour de la fonction : \n";
-            docstring += tabulations + tab + "@return " +definition.return + " => [description]\n";
+            docstring += tabulations + language.fonction.returnTitle+" : \n";
+            docstring += tabulations + tab + "@return " +definition.return + " => ["+language.fonction.returns+"]\n";
         }
        
         
