@@ -51,7 +51,14 @@ function splitDefinition(definition : string) : types.BaseDefinition{
     const lastChar : number = getLastParamCharIndex(definition);
     const param =  definition.substring(definition.indexOf("(")+1, lastChar);
     const retour = definition.substring(lastChar + 1 , definition.lastIndexOf(":"));
-    const tab = definition.substring(0,definition.indexOf("d"));
+    
+    let tab = null;
+    if(definition.includes("async ")){
+        tab = definition.substring(0,definition.indexOf("a"));
+    }else{
+        tab = definition.substring(0,definition.indexOf("d"));
+    }
+    
     return {
         title: head.replace("def ", "").replace(tab,""),
         param: param,

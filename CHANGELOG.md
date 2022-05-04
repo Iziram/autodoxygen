@@ -1,7 +1,10 @@
 # Change Log
 
 ## [Unreleased]
-## [2.0.0] - 2021-12-9
+## [2.1.0] - 2021-05-04
+### Addition(s) :
+- Async functions are now able to be commented.
+## [2.0.0] - 2021-12-09
 ### Addition(s) :
 - Language support : Currently the extension supports English and French. More languages can be added if needed.
 

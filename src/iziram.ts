@@ -34,7 +34,7 @@ export function getPEP8Definition(line? : number) : PEP | undefined{
         const startLine : string = editor.document.lineAt(num).text;
         let finalString : string = "";
 
-        while (process && startLine.trimStart().startsWith("def")){
+        while (process && (startLine.trimStart().startsWith("def") || startLine.trimStart().startsWith("async def"))){
             const line : string = editor.document.lineAt(num).text;
             if(line.trim().endsWith(":")){
                 process = false;

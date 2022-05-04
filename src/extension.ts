@@ -101,7 +101,7 @@ export function activate(context: vscode.ExtensionContext) {
 					}
 					continue;
 				}
-				if(line.startsWith('def') && bigComments.length === 0){
+				if((line.startsWith('def') || line.startsWith('async def')) && bigComments.length === 0){
 					setTimeout(()=>{
 						const pep : PEP | undefined = izi.getPEP8Definition(izi.getLineOfDef(line));
 						if(pep){
