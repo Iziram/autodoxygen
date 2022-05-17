@@ -3,14 +3,16 @@ export interface Definition {
 	summary: string,
 	params: Parameter[],
 	tab: string,
-	return?: string
+	return?: string,
+	type : string
 }
 
 export interface BaseDefinition{
 	title: string,
 	tab : string,
 	param: string,
-	return: string
+	return: string,
+	type : string
 }
 
 export interface Parameter{
@@ -34,7 +36,8 @@ export interface PEP{
 export interface Lang{
 	principale : DescriptionPrincipale,
 	notification : Notifications,
-	fonction : DescriptionFonction
+	fonction : DescriptionFonction,
+	class : DescriptionClass,
 }
 
 export interface DescriptionPrincipale{
@@ -57,4 +60,10 @@ export interface DescriptionFonction{
 	params : string,
 	returnTitle: string,
 	returns : string
+}
+
+export interface DescriptionClass{
+	summary : string,
+	paramTitle : string,
+	params : string,
 }

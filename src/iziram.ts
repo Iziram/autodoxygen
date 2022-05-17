@@ -34,7 +34,7 @@ export function getPEP8Definition(line? : number) : PEP | undefined{
         const startLine : string = editor.document.lineAt(num).text;
         let finalString : string = "";
 
-        while (process && (startLine.trimStart().startsWith("def") || startLine.trimStart().startsWith("async def"))){
+        while (process && checkStartOfLine(startLine.trimStart())){
             const line : string = editor.document.lineAt(num).text;
             if(line.trim().endsWith(":")){
                 process = false;
@@ -78,11 +78,11 @@ export function getFileName(path: string) : string{
 }
 
 export function getLineOfDef(definition : string) : number{
-    let value = -1;
-    const editor = vscode.window.activeTextEditor;
+    let value : number = -1;
+    const editor : vscode.TextEditor | undefined = vscode.window.activeTextEditor;
     if(editor){
         for (let i = 0; i<editor.document.lineCount; i++){
-            const line = editor.document.lineAt(i).text.trimStart();
+            const line : string = editor.document.lineAt(i).text.trimStart();
             if(line === definition){
                 value = i;
                 break;
@@ -90,4 +90,17 @@ export function getLineOfDef(definition : string) : number{
         }
     }
     return value;
+}
+/**
+ * 
+ * @param startLine Le début de la ligne à commenter
+ * @returns boolean Vrai si le début de la ligne correspond à un début de ligne commentable sinon Faux
+ */
+function checkStartOfLine(startLine : string) : boolean {
+    const possibleStart : string[] = [
+        "def",
+        "async def",
+        "class"
+    ];
+    return possibleStart.some(el=>{return startLine.startsWith(el);});
 }

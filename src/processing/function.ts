@@ -46,26 +46,69 @@ function getLastParamCharIndex(definition : string) :number{
  * @returns la définition de fonction sous la forme d'un objet séparant la définition en 4 parties
  */
 function splitDefinition(definition : string) : types.BaseDefinition{
-    
-    const head = definition.substring(0, definition.indexOf("("));
-    const lastChar : number = getLastParamCharIndex(definition);
-    const param =  definition.substring(definition.indexOf("(")+1, lastChar);
-    const retour = definition.substring(lastChar + 1 , definition.lastIndexOf(":"));
-    
-    let tab = null;
-    if(definition.includes("async ")){
+    const baseDefinition : types.BaseDefinition= {
+        title: "",
+        param: "",
+        tab: "",
+        return: "",
+        type:""
+    };
+    let tab : string = "";
+
+
+    if(definition.trimStart().startsWith("async ")){
         tab = definition.substring(0,definition.indexOf("a"));
-    }else{
+        baseDefinition.type = "def";
+    }else if(definition.trimStart().startsWith("class")){
+        baseDefinition.type = "class";
+        tab = definition.substring(0,definition.indexOf("c"));
+    }else if (definition.trimStart().startsWith("def")){
         tab = definition.substring(0,definition.indexOf("d"));
+        baseDefinition.type = "def";
+    }
+
+    baseDefinition.tab = tab;
+
+    if(baseDefinition.type === "def"){
+        const head = definition.substring(0, definition.indexOf("("));
+        const lastChar : number = getLastParamCharIndex(definition);
+        const param =  definition.substring(definition.indexOf("(")+1, lastChar);
+        const retour = definition.substring(lastChar + 1 , definition.lastIndexOf(":"));
+
+        baseDefinition.title = head.replace("def", "").replace(tab,"").replace("async ","");
+        baseDefinition.param = param;
+        baseDefinition.return = retour;
+    }
+    const lastChar : number = getLastParamCharIndex(definition);
+
+    switch(baseDefinition.type){
+        case "class":
+            if(definition.includes('(')){
+                const head = definition.substring(0, definition.indexOf("("));
+                const param =  definition.substring(definition.indexOf("(")+1, lastChar);
+
+                baseDefinition.title = head.replace("class", "").replace(tab,"");
+                baseDefinition.param = param;
+                baseDefinition.return = "";
+            }else{
+                const head = definition.substring(0, definition.indexOf(":"));
+                baseDefinition.title = head.replace("class", "").replace(tab,"");
+                baseDefinition.param = "";
+                baseDefinition.return = "";
+            }
+            break;
+        case "def":
+            const head = definition.substring(0, definition.indexOf("("));
+            const param =  definition.substring(definition.indexOf("(")+1, lastChar);
+            const retour = definition.substring(lastChar + 1 , definition.lastIndexOf(":"));
+
+            baseDefinition.title = head.replace("def", "").replace(tab,"").replace("async ","");
+            baseDefinition.param = param;
+            baseDefinition.return = retour;
+            break;
     }
     
-    return {
-        title: head.replace("def ", "").replace(tab,""),
-        param: param,
-        tab : tab,
-        return: retour
-    };
-    
+    return baseDefinition;
 }
 
 /**
@@ -219,21 +262,30 @@ function generateReturn(text : string) : string | undefined {
  */
 export function generateDefinition(textLine :string, lang = 'fr') : types.Definition | undefined{
     const language = getLang(lang);
-    let desc : string;
-    if (language){
-        desc = language.fonction.summary;
-    }else{
-        desc = "Description de la fonction";
-    }
-    if(textLine.split(" ").includes("def")){
+    if(textLine.split(" ")){
         const base : types.BaseDefinition = splitDefinition(textLine);
-        return {
-            "name": base.title,
-            "tab": base.tab,
-            "summary": "@brief ["+desc+"]",
-            "params" : getParams(base.param),
-            "return" : generateReturn(base.return)
-        };
+        let desc : string = "";
+        switch(base.type){
+            case "class":
+                desc = language ? language.class.summary : "Description de la classe";
+                return {
+                    "name": base.title,
+                    "tab": base.tab,
+                    "summary": "@brief ["+desc+"]",
+                    "params" : getParams(base.param),
+                    "type" : "class"
+                };
+            case "def":
+                desc = language ? language.fonction.summary : "Description de la fonction";
+                return {
+                    "name": base.title,
+                    "tab": base.tab,
+                    "summary": "@brief ["+desc+"]",
+                    "params" : getParams(base.param),
+                    "return" : generateReturn(base.return),
+                    "type" : "def"
+                };
+        }
     }
     return undefined;
     
@@ -257,14 +309,33 @@ export function generateDocString(definition? : types.Definition, memory? : Para
 
     if(definition){
         const tabulations : string = definition.tab + tab;
+        let title : string = "";
+        let params : string = "";
+        let prefix : string = "";
+
+        switch(definition.type){
+            case "class":
+                title = language.class.paramTitle;
+                params = language.class.params ;
+                prefix = "@implements ";
+                break;
+            case "def":
+                title = language.fonction.paramTitle;
+                params = language.fonction.params ;
+                prefix = "@param ";
+
+                break;
+        }
+        
+
         docstring = definition.tab + docstring;
 
         docstring += tabulations + definition.summary + "\n\n";
         if(definition.params.length > 0) {
-            docstring += tabulations + language.fonction.paramTitle+" : \n";
+            docstring += tabulations + title +" : \n";
         }
         definition.params.forEach((param : types.Parameter)=>{
-            docstring += tabulations + tab +"@param " + param.name;
+            docstring += tabulations + tab + prefix + param.name;
 
             if(param.type){
                 docstring += " : "+ param.type;
@@ -279,14 +350,14 @@ export function generateDocString(definition? : types.Definition, memory? : Para
                 if(desc){
                     docstring += " => "+desc.description+"\n";
                 }else{
-                    docstring += " => ["+language.fonction.params+"]\n";
+                    docstring += " => ["+ params +"]\n";
                 }
 
             }else{
-                docstring += " => ["+language.fonction.params+"]\n";
+                docstring += " => ["+ params +"]\n";
             }
         });
-        if(definition.return) {
+        if(definition.type === "def" && definition.return) {
             docstring += tabulations + language.fonction.returnTitle+" : \n";
             docstring += tabulations + tab + "@return " +definition.return + " => ["+language.fonction.returns+"]\n";
         }

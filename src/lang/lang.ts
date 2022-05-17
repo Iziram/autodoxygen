@@ -20,6 +20,11 @@ langs.set('français', JSON.parse(`{
         "params" : "description",
         "returnTitle" : "Retour de la fonction",
         "returns" : "description"
+    },
+    "class":{
+        "summary" : "Description de la classe",
+        "paramTitle" : "Héritage",
+        "params" : "description"
     }
 }`) as Lang);
 langs.set('english', JSON.parse(`{
@@ -41,6 +46,11 @@ langs.set('english', JSON.parse(`{
         "params" : "description",
         "returnTitle" : "Returns",
         "returns" : "description"
+    },
+    "class":{
+        "summary" : "Class's description",
+        "paramTitle" : "Inheritances",
+        "params" : "description"
     }
 }`) as Lang);
 
