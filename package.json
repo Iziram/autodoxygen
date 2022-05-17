@@ -3,16 +3,17 @@
 	"displayName": "AutoDoxyGen",
 	"publisher": "iziram",
 	"author": {
-		"name" : "iziram"
+		"name": "iziram"
 	},
 	"description": "A quick and easy tool to generate Doxygen's docstring on python files",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"engines": {
 		"vscode": "^1.0.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"license" : "MIT",
 	"activationEvents": [
 		"onStartupFinished"
 	],
@@ -37,60 +38,62 @@
 			}
 		],
 		"keybindings": [
-            {
-                "command": "autodoxygen.commentFile",
-                "key": "ctrl+shift+oem_8",
-                "mac": "cmd+shift+oem_8",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "autodoxygen.commentAllFile",
-                "key": "ctrl+shift+oem_2",
-                "mac": "cmd+shift+oem_2",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "autodoxygen.saveParamDescription",
-                "key": "ctrl+alt+oem_8",
-                "mac": "cmd+alt+oem_8",
-                "when": "editorTextFocus"
-            },
 			{
-                "command": "autodoxygen.commentFunction",
-                "key": "ctrl+oem_8",
-                "mac": "cmd+oem_8",
-                "when": "editorTextFocus"
-            }
-        ],
-		"configuration":[
+				"command": "autodoxygen.commentFile",
+				"key": "ctrl+shift+oem_8",
+				"mac": "cmd+shift+oem_8",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "autodoxygen.commentAllFile",
+				"key": "ctrl+shift+oem_2",
+				"mac": "cmd+shift+oem_2",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "autodoxygen.saveParamDescription",
+				"key": "ctrl+alt+oem_8",
+				"mac": "cmd+alt+oem_8",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "autodoxygen.commentFunction",
+				"key": "ctrl+oem_8",
+				"mac": "cmd+oem_8",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": [
 			{
 				"title": "AutoDoxyGen",
 				"properties": {
-					"autodoxygen.author":{
-						"type":"string",
+					"autodoxygen.author": {
+						"type": "string",
 						"description": "Default value of the Author section",
 						"default": "[Name] [Last Name]"
 					},
-					"autodoxygen.memoire.autorisation":{
+					"autodoxygen.memoire.autorisation": {
 						"type": "boolean",
 						"default": true,
 						"description": "Enables the memory settings. You'll be able to save a parameter's description and the extension will use it."
 					},
-					"autodoxygen.memoire.memoire":{
+					"autodoxygen.memoire.memoire": {
 						"type": "array",
 						"default": [],
 						"description": "Here lies the memory of the extensions."
 					},
-					"autodoxygen.language":{
-						"type" : "string",
-						"default" : "français",
-						"enum" : ["english","français"],
+					"autodoxygen.language": {
+						"type": "string",
+						"default": "français",
+						"enum": [
+							"english",
+							"français"
+						],
 						"enumDescriptions": [
 							"Changes the extenstion's language to English",
 							"Change la langue de l'extension en Français"
 						]
 					}
-						
 				}
 			}
 		]
@@ -104,7 +107,7 @@
 		"watch-tests": "tsc -p . -w --outDir out",
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"publish" : "vsce package -o ./released/",
+		"publish": "vsce package -o ./released/",
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
@@ -121,10 +124,12 @@
 		"ts-loader": "^9.2.5",
 		"webpack": "^5.52.1",
 		"webpack-cli": "^4.8.0",
+		"minimist": ">=1.2.6",
+		"nanoid": ">=3.1.31",
 		"@vscode/test-electron": "^1.6.2"
 	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Iziram/autodoxygen"
-	  }
+	}
 }
