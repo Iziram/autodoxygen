@@ -66,4 +66,5 @@ export interface DescriptionClass{
 	summary : string,
 	paramTitle : string,
 	params : string,
+	prefix : string
 }

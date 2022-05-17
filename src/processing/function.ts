@@ -317,7 +317,7 @@ export function generateDocString(definition? : types.Definition, memory? : Para
             case "class":
                 title = language.class.paramTitle;
                 params = language.class.params ;
-                prefix = "@implements ";
+                prefix = language.class.prefix;
                 break;
             case "def":
                 title = language.fonction.paramTitle;

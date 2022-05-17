@@ -104,3 +104,21 @@ export function checkStartOfLine(startLine : string) : boolean {
     ];
     return possibleStart.some(el=>{return startLine.startsWith(el);});
 }
+
+
+export function getModules() : string[]{
+    const modules :string[] = [];
+
+    const editor : vscode.TextEditor | undefined = vscode.window.activeTextEditor;
+    if(editor){
+        for (let i = 0; i<editor.document.lineCount; i++){
+            const line : string = editor.document.lineAt(i).text.trimStart();
+            if(line.startsWith('from') || line.startsWith('import')){
+                //from nana import nini
+                modules.push(line.split(' ')[1]);
+            }
+        }
+    }
+    console.log(modules);
+    return modules;
+}

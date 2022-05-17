@@ -28,9 +28,14 @@ export function activate(context: vscode.ExtensionContext) {
 		if(editor){
 			//affichage du placeholder de la docstring
 			let string : string = '"""! @brief ['+lang.principale.desc+']\n';
+			const modules = izi.getModules();
 			string += " @file "+izi.getFileName(editor.document.uri.fsPath) + "\n";
 			string += " @section libs Librairies/Modules\n";
-			string += "  - ["+lang.principale.module+"] ("+lang.principale.link+")\n\n";
+			if(modules.length > 0){
+				for(let i = 0 ; i< modules.length ; i++){
+					string += "  - "+modules[i]+" ("+lang.principale.link+")\n";
+				}
+			}
 			string += " @section authors "+lang.principale.auth+"\n";
 			const d : Date = new Date();
 			const date : string  = d.toLocaleDateString();
@@ -38,6 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
 			string += "  - "+lang.principale.create.replace('%auteur%', a).replace('%date%',date)+" .\n";
 			string += '"""\n';
 			izi.enterText(string, new vscode.Position(0,0));
+			
 		}
 	});
 

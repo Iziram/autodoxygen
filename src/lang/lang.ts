@@ -23,8 +23,9 @@ langs.set('français', JSON.parse(`{
     },
     "class":{
         "summary" : "Description de la classe",
-        "paramTitle" : "Héritage",
-        "params" : "description"
+        "paramTitle" : "## Héritage",
+        "params" : "description",
+        "prefix" : "- Implémente "
     }
 }`) as Lang);
 langs.set('english', JSON.parse(`{
@@ -49,8 +50,9 @@ langs.set('english', JSON.parse(`{
     },
     "class":{
         "summary" : "Class's description",
-        "paramTitle" : "Inheritances",
-        "params" : "description"
+        "paramTitle" : "## Inheritances",
+        "params" : "description",
+        "prefix" : "- Implements "
     }
 }`) as Lang);
 
