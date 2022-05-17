@@ -96,7 +96,7 @@ export function getLineOfDef(definition : string) : number{
  * @param startLine Le début de la ligne à commenter
  * @returns boolean Vrai si le début de la ligne correspond à un début de ligne commentable sinon Faux
  */
-function checkStartOfLine(startLine : string) : boolean {
+export function checkStartOfLine(startLine : string) : boolean {
     const possibleStart : string[] = [
         "def",
         "async def",
