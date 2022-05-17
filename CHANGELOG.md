@@ -1,6 +1,7 @@
 # Change Log
 
 ## [Unreleased]
+## [2.2.0]
 ### Addition(s) :
 - Class documentation
 - Automatic import lister
